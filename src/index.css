@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+@layer utilities {
+  .animate-fade-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========== HYBRID CYBER RACING BACKGROUND (4 layers) ========== */
+/* Pure CSS, performance friendly, fixed behind content */
+
+@keyframes scanMove {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(100vw); }
+}
+
+@keyframes particleFloat {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(3px, -5px); }
+  50% { transform: translate(-2px, 3px); }
+  75% { transform: translate(4px, 2px); }
+}
+
+.animated-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  /* Layer 1: Cyber grid (horizontal + vertical lines, 40px spacing) */
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Layer 2: Red glow center */
+.animated-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 0, 0, 0.15),
+    transparent 60%
+  );
+}
+
+/* Layer 3: Scanning line (thin, blur, left-to-right, 12s) */
+.animated-bg::after {
+  content: '';
+  position: absolute;
+  top: 35%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 0, 0, 0.25);
+  filter: blur(1px);
+  animation: scanMove 12s linear infinite;
+}
+
+/* Layer 4: Floating particles (small red circles 2-4px, low opacity, slow float, ~12 particles) */
+.animated-bg-particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.animated-bg-particles::before {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 0;
+  top: 0;
+  box-shadow:
+    24px 60px 0 2px rgba(255, 0, 0, 0.2),
+    90px 180px 0 3px rgba(255, 0, 0, 0.15),
+    160px 40px 0 2px rgba(255, 0, 0, 0.18),
+    250px 220px 0 4px rgba(255, 0, 0, 0.12),
+    300px 80px 0 2px rgba(255, 0, 0, 0.2),
+    40px 280px 0 3px rgba(255, 0, 0, 0.14),
+    320px 160px 0 2px rgba(255, 0, 0, 0.16),
+    120px 380px 0 3px rgba(255, 0, 0, 0.13),
+    200px 20px 0 2px rgba(255, 0, 0, 0.18),
+    280px 300px 0 4px rgba(255, 0, 0, 0.11),
+    50px 420px 0 2px rgba(255, 0, 0, 0.15),
+    340px 260px 0 3px rgba(255, 0, 0, 0.12);
+  animation: particleFloat 18s ease-in-out infinite;
+}
